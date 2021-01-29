@@ -43,6 +43,14 @@ class Save:
         length = name_bytes.index(TEXT_TERMINATOR)
         return decode_game_text(name_bytes[:length])
 
+    @property
+    def player_id(self):
+        ID_OFFSET = 0x2605
+        ID_SIZE = 2
+        id_bytes = self.bytes[ID_OFFSET:ID_OFFSET + ID_SIZE]
+        id_val = struct.unpack('>H', id_bytes)[0]
+        return id_val
+
 
 def decode_game_text(byte_string):
     decode80toBF = [
@@ -95,7 +103,7 @@ def main():
     # save_bytes = load_save_from_bgb_state('red.sgm')
     save_bytes = load_save_from_mob_state('red.st1')
     save = Save(save_bytes)
-    print('Player:', save.player_name)
+    print('Player:', save.player_name, f'IDNo/{save.player_id}')
     print('Rival:', save.rival_name)
     print('Pokedex seen: ', save.pokedex_seen)
     print('Pokedex owned: ', save.pokedex_owned)
