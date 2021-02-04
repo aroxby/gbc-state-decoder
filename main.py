@@ -98,10 +98,17 @@ def load_save_from_mob_state(path):
         return load_save(state_file)
 
 
+def load_save_from_vba_state(path):
+    with gzip.open(path, 'rb') as state_file:
+        state_file.seek(0xFCE6)
+        return load_save(state_file)
+
+
 def main():
     # save_bytes = load_save_from_file('red.sav')
     # save_bytes = load_save_from_bgb_state('red.sgm')
-    save_bytes = load_save_from_mob_state('red.st1')
+    # save_bytes = load_save_from_mob_state('red.st1')
+    save_bytes = load_save_from_vba_state('red.sg1')
     save = Save(save_bytes)
     print('Player:', save.player_name, f'IDNo/{save.player_id}')
     print('Rival:', save.rival_name)
